@@ -6,11 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func mian() {
+func main() {
 	//server是一个web服务器的实例
 	server := gin.Default()
-	
-	u := &web.UserHandler{}
+
+	u := web.NewUserHandler()
 	u.RegisterRoutesV1(server.Group("/user"))
 	//u.RegisterRoutes(server)
 	server.Run(":8080")
