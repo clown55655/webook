@@ -2,6 +2,8 @@ package web
 
 import (
 	"net/http"
+	"webook/internal/domain"
+	"webook/internal/service"
 
 	regexp "github.com/dlclark/regexp2"
 
@@ -10,6 +12,7 @@ import (
 
 // UserHandler 我准备在它上面定义跟用户有关的路由
 type UserHandler struct {
+	svc         *service.UserService
 	emailExp    *regexp.Regexp
 	passwordExp *regexp.Regexp
 }
@@ -82,6 +85,16 @@ func (u *UserHandler) Signup(context *gin.Context) {
 	if !ok {
 		context.String(http.StatusOK, "密码格式不正确")
 		return
+	}
+
+	//调用service
+	err = u.svc.SignUp(context, domain.User{
+		Email:    req.Email,
+		Password: req.Password,
+	})
+
+	if err != nil {
+
 	}
 	context.String(http.StatusOK, "注册成功")
 }
